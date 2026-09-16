@@ -1,0 +1,41 @@
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        
+        memo = {}
+
+        def backtrack(amount):
+
+            if amount in memo:
+                return memo[amount]
+
+            if amount == 0:
+                return 0
+            
+            res = float("inf")
+            for c in coins:
+                if amount - c < 0:
+                    continue
+                res = min(res, backtrack(amount - c) + 1)
+            
+            memo[amount] = res
+            return res
+        
+        #minCoins = backtrack(amount)
+        #return minCoins if minCoins != float("inf") else -1
+
+        dp = [float("inf")] * (amount + 1)
+        dp[0] = 0
+
+        for i in range(1, amount + 1):
+
+            for c in coins:
+                if i - c < 0:
+                    continue
+                dp[i] = min(dp[i - c] + 1, dp[i])
+        
+        return dp[-1] if dp[-1] != float("inf") else -1
+
+
+
+            
+            
